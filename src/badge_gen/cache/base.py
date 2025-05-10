@@ -1,0 +1,6 @@
+from typing import Protocol
+
+
+class Cacher(Protocol):
+    async def save(self, key: str, value: str) -> None: ...
+    async def load(self, key: str) -> str | None: ...

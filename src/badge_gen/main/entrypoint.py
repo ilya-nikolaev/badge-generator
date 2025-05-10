@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from badge_gen.handlers import leetcode_router
 from badge_gen.main.config import Config, load_config
-from badge_gen.main.di.providers import HTTPProvider, TemplateProvider
+from badge_gen.main.di.providers import CacheProvider, HTTPProvider, TemplateProvider
 
 
 def create_app() -> FastAPI:
@@ -17,6 +17,7 @@ def create_app() -> FastAPI:
     container = make_async_container(
         HTTPProvider(),
         TemplateProvider(),
+        CacheProvider(),
         context={
             Config: config,
         },

@@ -5,3 +5,6 @@ leetcode = [
 
 [template]
 path = "./templates"
+
+[cache]
+redis_uri = "redis://cache:6379"

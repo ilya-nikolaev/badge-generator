@@ -13,12 +13,17 @@ class AccessConfig(BaseModel):
     white_list: dict[str, list[Username]]
 
 
+class CacheConfig(BaseModel):
+    redis_uri: str
+
+
 class TemplateConfig(BaseModel):
     path: Path
 
 
 class Config(BaseModel):
     access: AccessConfig
+    cache: CacheConfig
     template: TemplateConfig
 
 
