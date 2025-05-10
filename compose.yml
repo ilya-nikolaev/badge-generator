@@ -1,8 +1,6 @@
 services:
   api:
-    build:
-      context: .
-      network: host
+    build: .
     container_name: badge-generator-api
     depends_on:
       - cache
@@ -12,6 +10,8 @@ services:
     volumes:
       - ./.config/config.toml:/app/.config/config.toml:ro
       - ./templates:/app/templates:ro
+    networks:
+      - badge-generator-network
 
   cache:
     image: redis:7-alpine3.21
@@ -19,6 +19,14 @@ services:
     restart: unless-stopped
     volumes:
       - redis-data:/data
+    networks:
+      - badge-generator-network
 
 volumes:
   redis-data:
+
+networks:
+  badge-generator-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: "1450"
