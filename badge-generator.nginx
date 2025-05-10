@@ -1,0 +1,55 @@
+server {
+    listen 80;
+    server_name badges.rnurnu.ru;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    server_name badges.rnurnu.ru;
+
+    ssl_certificate /etc/letsencrypt/live/badges.rnurnu.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/badges.rnurnu.ru/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256';
+    ssl_ecdh_curve X25519:secp256r1;
+    ssl_dhparam /etc/nginx/dhparam.pem;
+
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+    ssl_session_tickets off;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-Frame-Options DENY always;
+    add_header X-XSS-Protection "1; mode=block";
+
+    keepalive_timeout 75s;
+    keepalive_requests 100;
+
+    location / {
+        proxy_pass http://localhost:9080/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    gzip on;
+    gzip_types application/json image/svg+xml;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_min_length 256;
+    gzip_vary on;
+
+    access_log /var/log/nginx/badges.rnurnu.ru.access.log;
+    error_log /var/log/nginx/badges.rnurnu.ru.error.log;
+}
