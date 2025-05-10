@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm AS python-base
+FROM python:3.12-alpine3.21 AS python-base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -15,9 +15,7 @@ WORKDIR $APP_PATH
 
 FROM python-base AS builder
 
-RUN apt update \
-    && apt install -y --no-install-recommends build-essential \
-    && rm -rf /var/lib/apt/lists/
+RUN apk update && apk add --no-cache build-base
 
 COPY --from=ghcr.io/astral-sh/uv:0.6.17 /uv /uvx /bin/
 
