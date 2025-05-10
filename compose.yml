@@ -1,6 +1,8 @@
 services:
   api:
-    build: .
+    build:
+      context: .
+      network: host
     container_name: badge-generator-api
     depends_on:
       - cache
