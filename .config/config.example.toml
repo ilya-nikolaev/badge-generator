@@ -1,0 +1,7 @@
+[access.white_list]
+leetcode = [
+    "ilya-nikolaev",
+]
+
+[template]
+path = "./templates"
