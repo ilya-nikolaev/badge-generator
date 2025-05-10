@@ -35,7 +35,7 @@ leetcode_router = APIRouter(prefix="/leetcode", route_class=DishkaRoute)
     summary="Generate statistics badge for leetcode",
     response_description="SVG image 400x40 px",
 )
-async def get_40(
+async def get_leetcode_badge(
     username: Annotated[
         str,
         Path(
@@ -55,6 +55,7 @@ async def get_40(
     cacher: FromDishka[Cacher],
 ) -> Response:
     if username not in config.access.white_list["leetcode"]:
+        logger.warning("Access denied for user: %s", username)
         raise HTTPException(403, "Username is not in white list")
 
     key = f"leetcode:profile:{username}"
@@ -63,7 +64,8 @@ async def get_40(
             profile = await get_profile(client, username)
             await cacher.save_model(key, profile)
         except Exception as e:
-            raise HTTPException(502, "Failed to fetch profile") from e
+            msg = f"Error fetching profile for {username}"
+            raise HTTPException(502, msg) from e
 
     content = env.get_template("leetcode-40.svg").render(
         username=profile.username,
@@ -72,6 +74,7 @@ async def get_40(
         hard=profile.solved.hard,
         height=height,
     )
+    logger.info("Rendered badge for user: %s", username)
 
     return Response(
         content,
