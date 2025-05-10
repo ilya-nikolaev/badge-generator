@@ -73,4 +73,10 @@ async def get_40(
         height=height,
     )
 
-    return Response(content, media_type="image/svg+xml")
+    return Response(
+        content,
+        media_type="image/svg+xml",
+        headers={
+            "Cache-Control": "max-age=0, private, must-revalidate",
+        },
+    )
