@@ -24,7 +24,7 @@ def create_app() -> FastAPI:
     handler.setFormatter(formatter)
 
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     logger.handlers.clear()
     logger.addHandler(handler)
 
