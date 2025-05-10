@@ -5,8 +5,8 @@ import redis.asyncio as redis
 from dishka import Provider, Scope, from_context, provide
 from jinja2 import BaseLoader, Environment, FileSystemLoader
 
-from badge_gen.cache.base import Cacher
-from badge_gen.cache.redis import RedisCacher
+from badge_gen.cachers.base import Cacher
+from badge_gen.cachers.redis import RedisCacher
 from badge_gen.main.config import Config
 
 

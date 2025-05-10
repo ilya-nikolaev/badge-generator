@@ -2,7 +2,7 @@ import logging
 
 import redis.asyncio as redis
 
-from badge_gen.cache.base import Cacher
+from badge_gen.cachers.base import Cacher
 
 logger = logging.getLogger(__name__)
 

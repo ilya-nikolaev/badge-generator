@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Path, Response, status
 from jinja2 import Environment
 from pydantic import ValidationError
 
-from badge_gen.cache.base import Cacher
+from badge_gen.cachers.base import Cacher
 from badge_gen.fetchers.leetcode import LeetCodeProfile, get_profile
 from badge_gen.main.config import Config
 
