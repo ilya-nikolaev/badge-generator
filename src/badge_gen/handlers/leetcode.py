@@ -6,7 +6,6 @@ from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, HTTPException, Path, Response, status
 from jinja2 import Environment
-from pydantic import ValidationError
 
 from badge_gen.cachers.base import Cacher
 from badge_gen.fetchers.leetcode import LeetCodeProfile, get_profile
@@ -54,24 +53,16 @@ async def get_40(
         raise HTTPException(403, "Username is not in white list")
 
     key = f"leetcode:profile:{username}"
-    cached_profile: LeetCodeProfile | None = None
-    if cache := await cacher.load(key):
-        try:
-            cached_profile = LeetCodeProfile.model_validate_json(cache)
-        except ValidationError:
-            logger.error("Got invalid cache")
-            cached_profile = None
+
+    cached_profile = await cacher.load_model(key, LeetCodeProfile)
+    try:
+        profile = cached_profile or await get_profile(client, username)
+    except Exception as e:
+        logger.exception("Failed to fetch profile")
+        raise HTTPException(502, "Failed to fetch profile") from e
 
     if cached_profile is None:
-        try:
-            profile = await get_profile(client, username)
-        except Exception:
-            logger.exception("Failed to fetch LeetCode profile")
-            raise HTTPException(502, "Failed to fetch profile from LeetCode")
-        else:
-            await cacher.save(key, profile.model_dump_json())
-    else:
-        profile = cached_profile
+        await cacher.save(key, profile.model_dump_json())
 
     content = env.get_template("leetcode-40.svg").render(
         username=profile.username,

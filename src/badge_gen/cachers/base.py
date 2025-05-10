@@ -1,6 +1,22 @@
-from typing import Protocol
+import abc
+import logging
+
+from pydantic import BaseModel, ValidationError
+
+logger = logging.getLogger(__name__)
 
 
-class Cacher(Protocol):
+class Cacher(abc.ABC):
+    @abc.abstractmethod
     async def save(self, key: str, value: str) -> None: ...
+
+    @abc.abstractmethod
     async def load(self, key: str) -> str | None: ...
+
+    async def load_model[T: BaseModel](self, key: str, model: type[T]) -> T | None:
+        if cache := await self.load(key):
+            try:
+                return model.model_validate_json(cache)
+            except ValidationError:
+                logger.error("Cache validation failed")
+                return None
