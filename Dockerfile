@@ -32,4 +32,4 @@ FROM python-base AS runner
 
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 
-CMD ["uvicorn", "badge_gen.main.entrypoint:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "badge_gen.main.entrypoint:create_app", "--host", "0.0.0.0", "--port", "80", "--factory"]

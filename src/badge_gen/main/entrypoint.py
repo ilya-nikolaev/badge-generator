@@ -29,6 +29,3 @@ def create_app() -> FastAPI:
     app.include_router(leetcode_router)
 
     return app
-
-
-app = create_app()
