@@ -2,13 +2,13 @@
 <svg width="{{ height * 10 }}" height="{{ height }}" viewBox="0 0 {{ height * 10 }} {{ height }}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <filter id="text-shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="{{ height / 40 }}" dy="{{ height / 40  }}" stdDeviation="{{ height / 40  }}" flood-color="rgba(0,0,0,0.5)"/>
+            <feDropShadow dx="{{ height * 0.025 }}" dy="{{ height * 0.025 }}" stdDeviation="{{ height * 0.025 }}" flood-color="rgba(0,0,0,0.5)"/>
         </filter>
     </defs>
 
     <rect width="100%" height="100%" fill="#282828"/>
-    <g font-family="'Fira Mono'" font-size="{{ height * 0.4 }}" filter="url(#text-shadow)">
-        <text fill="#f5f5f5" x="{{ height / 4 }}" y="{{ height * 0.5 }}" dominant-baseline="central">{{ username }}</text>
+    <g font-family="'Fira Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Courier New', monospace" font-size="{{ height * 0.4 }}" filter="url(#text-shadow)">
+        <text fill="#f5f5f5" x="{{ height * 0.25 }}" y="{{ height * 0.5 }}" dominant-baseline="central">{{ username }}</text>
         <g transform="translate({{ height * 4.25 }}, {{ height * 0.5 }})">
             <circle fill="#f63737" r="{{ height * 0.125 }}"/>
             <text fill="#f63737" x="{{ height * 0.15 }}" text-anchor="start" dominant-baseline="central">{{ hard | pad(4) }}</text>
