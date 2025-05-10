@@ -11,15 +11,15 @@
         <text fill="#f5f5f5" x="{{ height * 0.25 }}" y="{{ height * 0.5 }}" dominant-baseline="central">{{ username }}</text>
         <g transform="translate({{ height * 4.25 }}, {{ height * 0.5 }})">
             <circle fill="#f63737" r="{{ height * 0.125 }}"/>
-            <text fill="#f63737" x="{{ height * 0.15 }}" text-anchor="start" dominant-baseline="central">{{ hard | pad(4) }}</text>
+            <text fill="#f63737" x="{{ height * 0.375 }}" text-anchor="start" dominant-baseline="central">{{ hard | pad(4) }}</text>
         </g>
         <g transform="translate({{ height * 6.1875 }}, {{ height * 0.5 }})">
             <circle fill="#ffb600" r="{{ height * 0.125 }}"/>
-            <text fill="#ffb600" x="{{ height * 0.15 }}" text-anchor="start" dominant-baseline="central">{{ medium | pad(4) }}</text>
+            <text fill="#ffb600" x="{{ height * 0.375 }}" text-anchor="start" dominant-baseline="central">{{ medium | pad(4) }}</text>
         </g>
         <g transform="translate({{ height * 8.25 }}, {{ height * 0.5 }})">
             <circle fill="#1cbaba" r="{{ height * 0.125 }}"/>
-            <text fill="#1cbaba" x="{{ height * 0.15 }}" text-anchor="start" dominant-baseline="central">{{ easy | pad(4) }}</text>
+            <text fill="#1cbaba" x="{{ height * 0.375 }}" text-anchor="start" dominant-baseline="central">{{ easy | pad(4) }}</text>
         </g>
     </g>
 </svg>
