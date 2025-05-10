@@ -47,14 +47,16 @@ async def get_profile(
     response.raise_for_status()
 
     data = response.json()
-    logger.debug(
-        "Got response: %s",
-        json.dumps(
-            data,
-            indent=4,
-            ensure_ascii=False,
-        ),
-    )
+
+    if logger.isEnabledFor(logging.DEBUG):
+        logger.debug(
+            "Got response: %s",
+            json.dumps(
+                data,
+                indent=4,
+                ensure_ascii=False,
+            ),
+        )
 
     user_data = data["data"]["matchedUser"]
     submissions = user_data["submitStats"]["acSubmissionNum"]

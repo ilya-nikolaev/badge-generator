@@ -27,7 +27,7 @@ class TemplateProvider(Provider):
 class HTTPProvider(Provider):
     @provide(scope=Scope.APP)
     async def get_http_client(self) -> AsyncIterable[httpx.AsyncClient]:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(http2=True) as client:
             yield client
 
 
