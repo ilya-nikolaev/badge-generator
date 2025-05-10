@@ -34,7 +34,7 @@ class LeetCodeProfile(BaseModel):
     solved: ProblemStats
 
 
-@log_duration
+@log_duration("LeetCode profile")
 async def get_profile(
     client: httpx.AsyncClient,
     username: str,
