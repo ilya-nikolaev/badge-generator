@@ -32,7 +32,10 @@ class LeetCodeProfile(BaseModel):
     solved: ProblemStats
 
 
-async def get_profile(client: httpx.AsyncClient, username: str) -> LeetCodeProfile:
+async def get_profile(
+    client: httpx.AsyncClient,
+    username: str,
+) -> LeetCodeProfile:
     response = await client.post(
         _GQL_URL,
         json={"query": _GQL_QUERY, "variables": {"username": username}},

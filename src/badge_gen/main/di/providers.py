@@ -19,7 +19,7 @@ class TemplateProvider(Provider):
 
     @provide(scope=Scope.APP)
     def get_env(self, loader: BaseLoader) -> Environment:
-        env = Environment(loader=loader)
+        env = Environment(loader=loader, autoescape=True)
         env.filters["pad"] = lambda val, width: f"{int(val):0{width}d}"
         return env
 
@@ -36,7 +36,8 @@ class CacheProvider(Provider):
 
     @provide(scope=Scope.APP)
     async def get_redis_pool(
-        self, config: Config
+        self,
+        config: Config,
     ) -> AsyncIterable[redis.ConnectionPool]:
         pool = redis.ConnectionPool.from_url(config.cache.redis_uri)
         yield pool
@@ -44,7 +45,8 @@ class CacheProvider(Provider):
 
     @provide(scope=Scope.REQUEST)
     async def get_redis_client(
-        self, pool: redis.ConnectionPool
+        self,
+        pool: redis.ConnectionPool,
     ) -> AsyncIterable[redis.Redis]:
         connection = redis.Redis.from_pool(pool)
         yield connection

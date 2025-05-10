@@ -33,6 +33,9 @@ lint.ignore = [
 
     # only affects perfomance and brings nothing useful
     "UP038",
+
+    # Ruff formatter complains about this
+    "COM812",
 ]
 
 [lint.per-file-ignores]

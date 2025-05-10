@@ -13,10 +13,14 @@ class Cacher(abc.ABC):
     @abc.abstractmethod
     async def load(self, key: str) -> str | None: ...
 
-    async def load_model[T: BaseModel](self, key: str, model: type[T]) -> T | None:
+    async def load_model[T: BaseModel](
+        self,
+        key: str,
+        model: type[T],
+    ) -> T | None:
         if cache := await self.load(key):
             try:
                 return model.model_validate_json(cache)
             except ValidationError:
-                logger.error("Cache validation failed")
-                return None
+                logger.exception("Cache validation failed")
+        return None
