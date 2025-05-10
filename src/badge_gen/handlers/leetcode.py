@@ -53,16 +53,12 @@ async def get_40(
         raise HTTPException(403, "Username is not in white list")
 
     key = f"leetcode:profile:{username}"
-
-    cached_profile = await cacher.load_model(key, LeetCodeProfile)
-    try:
-        profile = cached_profile or await get_profile(client, username)
-    except Exception as e:
-        logger.exception("Failed to fetch profile")
-        raise HTTPException(502, "Failed to fetch profile") from e
-
-    if cached_profile is None:
-        await cacher.save(key, profile.model_dump_json())
+    if (profile := await cacher.load_model(key, LeetCodeProfile)) is None:
+        try:
+            profile = await get_profile(client, username)
+            await cacher.save(key, profile.model_dump_json())
+        except Exception as e:
+            raise HTTPException(502, "Failed to fetch profile") from e
 
     content = env.get_template("leetcode-40.svg").render(
         username=profile.username,
