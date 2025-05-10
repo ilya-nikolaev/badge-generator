@@ -13,6 +13,9 @@ class Cacher(abc.ABC):
     @abc.abstractmethod
     async def load(self, key: str) -> str | None: ...
 
+    async def save_model(self, key: str, model: BaseModel) -> None:
+        await self.save(key, model.model_dump_json())
+
     async def load_model[T: BaseModel](
         self,
         key: str,

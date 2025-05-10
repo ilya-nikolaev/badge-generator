@@ -17,10 +17,16 @@ class RedisCacher(Cacher):
             await self.client.setex(key, self.ttl, value)
         except redis.RedisError:
             logger.exception("Cache save failed")
+        else:
+            logger.debug("Cache saved: %s", key)
 
     async def load(self, key: str) -> str | None:
         try:
             response: bytes | None = await self.client.get(key)
-            return response.decode() if response is not None else None
         except redis.RedisError:
             logger.exception("Cache load failed")
+            return None
+        else:
+            logger.debug("Cache loaded: %s", key)
+
+        return response.decode() if response is not None else None

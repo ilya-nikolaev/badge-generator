@@ -61,7 +61,7 @@ async def get_40(
     if (profile := await cacher.load_model(key, LeetCodeProfile)) is None:
         try:
             profile = await get_profile(client, username)
-            await cacher.save(key, profile.model_dump_json())
+            await cacher.save_model(key, profile)
         except Exception as e:
             raise HTTPException(502, "Failed to fetch profile") from e
 
