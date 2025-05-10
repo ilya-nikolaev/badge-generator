@@ -10,7 +10,7 @@ from badge_gen.main.di.providers import CacheProvider, HTTPProvider, TemplatePro
 
 
 def create_app() -> FastAPI:
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     config = load_config()
 
