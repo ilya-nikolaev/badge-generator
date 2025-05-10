@@ -6,7 +6,7 @@ A simple badge generator for displaying stats — built with **FastAPI**, uses *
 ## Examples
 
 ### LeetCode
-![LeetCode badge](https://badges.rnurnu.ru/leetcode/40/ilya-nikolaev)
+![LeetCode badge](https://badges.rnurnu.ru/leetcode/40/ilya-nikolaev?v=2)
 
 
 ## Run
