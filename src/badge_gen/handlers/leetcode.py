@@ -6,6 +6,7 @@ from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, HTTPException, Path, Response, status
 from jinja2 import Environment
+from pydantic import PositiveInt
 
 from badge_gen.cachers.base import Cacher
 from badge_gen.fetchers.leetcode import LeetCodeProfile, get_profile
@@ -17,7 +18,7 @@ leetcode_router = APIRouter(prefix="/leetcode", route_class=DishkaRoute)
 
 
 @leetcode_router.get(
-    "/40/{username}",
+    "/{height}/{username}",
     status_code=200,
     responses={
         status.HTTP_200_OK: {
@@ -43,6 +44,10 @@ async def get_40(
             description="Username (alphanumeric with underscores/dashes)",
         ),
     ],
+    height: Annotated[
+        PositiveInt,
+        Path(example=40, description="Badge height"),
+    ],
     *,
     config: FromDishka[Config],
     env: FromDishka[Environment],
@@ -65,6 +70,7 @@ async def get_40(
         easy=profile.solved.easy,
         medium=profile.solved.medium,
         hard=profile.solved.hard,
+        height=height,
     )
 
     return Response(content, media_type="image/svg+xml")
