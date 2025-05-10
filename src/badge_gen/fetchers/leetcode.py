@@ -4,6 +4,8 @@ import logging
 import httpx
 from pydantic import BaseModel
 
+from badge_gen.fetchers.utils import log_duration
+
 logger = logging.getLogger(__name__)
 
 _GQL_URL = "https://leetcode.com/graphql"
@@ -32,6 +34,7 @@ class LeetCodeProfile(BaseModel):
     solved: ProblemStats
 
 
+@log_duration
 async def get_profile(
     client: httpx.AsyncClient,
     username: str,
@@ -44,7 +47,14 @@ async def get_profile(
     response.raise_for_status()
 
     data = response.json()
-    logger.debug("Got response: %s", json.dumps(data))
+    logger.debug(
+        "Got response: %s",
+        json.dumps(
+            data,
+            indent=4,
+            ensure_ascii=False,
+        ),
+    )
 
     user_data = data["data"]["matchedUser"]
     submissions = user_data["submitStats"]["acSubmissionNum"]

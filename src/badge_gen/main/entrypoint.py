@@ -1,5 +1,6 @@
 import logging
 
+import uvicorn.logging
 from dishka import make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
@@ -14,7 +15,18 @@ from badge_gen.main.di.providers import (
 
 
 def create_app() -> FastAPI:
-    logging.basicConfig(level=logging.INFO)
+    formatter = uvicorn.logging.DefaultFormatter(
+        fmt="%(levelprefix)s %(asctime)s %(module)s %(message)s",
+        datefmt="%d-%m-%Y %H:%M:%S",
+    )
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    logger.handlers.clear()
+    logger.addHandler(handler)
 
     config = load_config()
 
